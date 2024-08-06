@@ -2,7 +2,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     var score = 0
     var timeRemaining = 30
     var timer: Timer?
@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     let scoreLabel = UILabel()
     let timeLabel = UILabel()
     var gameActive = true
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,10 +25,9 @@ class ViewController: UIViewController {
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateGame), userInfo: nil, repeats: true)
         Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(updateTargets), userInfo: nil, repeats: true)
     }
-
+    
     private func setupBackground() {
         view.backgroundColor = .white
-        
         let gridSize: CGFloat = 25.0
         let gridLayer = CAShapeLayer()
         let path = UIBezierPath()
@@ -49,7 +48,7 @@ class ViewController: UIViewController {
         
         view.layer.addSublayer(gridLayer)
     }
-
+    
     private func setupLabels() {
         scoreLabel.text = "Score: \(score)"
         scoreLabel.font = UIFont.systemFont(ofSize: 32)
@@ -73,7 +72,7 @@ class ViewController: UIViewController {
     }
     
     private func generateInitialTargets() {
-        for _ in 0..<10 { // Generate fewer initial targets
+        for _ in 0..<10 { // Generate initial targets
             let targetType = generateTargetType()
             targetTypes.append(targetType)
             addTarget(type: targetType)
@@ -90,7 +89,7 @@ class ViewController: UIViewController {
             return "freeze"
         }
     }
-
+    
     private func addTarget(type: String) {
         let targetView = UIView()
         let size: CGFloat = 25
@@ -114,9 +113,8 @@ class ViewController: UIViewController {
         }
         
         targetView.center = CGPoint(x: randomXPosition(), y: -size)
-
-
-let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         targetView.addGestureRecognizer(tapGesture)
         
         targetViews.append(targetView)
@@ -158,7 +156,7 @@ let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTa
         shapeLayer.lineWidth = 2.0
         view.layer.addSublayer(shapeLayer)
     }
-
+    
     private func randomXPosition() -> CGFloat {
         let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame
         return CGFloat.random(in: safeAreaFrame.minX + 50...safeAreaFrame.maxX - 50)
@@ -233,25 +231,22 @@ let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTa
         isFrozen = true
         freezeTimeRemaining = 5 // Freeze for 5 ticks (0.5 seconds per tick, so 2.5 seconds total)
     }
-
+    
     private func showFinalScore() {
-
-let alert = UIAlertController(title: "Game Over", message: "Your final score is \(score)", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Game Over", message: "Your final score is \(score)", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
             self.resetGame()
         }))
         present(alert, animated: true, completion: nil)
     }
-
+    
     private func resetGame() {
         score = 0
         timeRemaining = 30
         speed = 2.0
         isFrozen = false
         freezeTimeRemaining = 0
-
-        
-scoreLabel.text = "Score: \(score)"
+        scoreLabel.text = "Score: \(score)"
         timeLabel.text = "Time: \(timeRemaining)"
         
         for targetView in targetViews {
